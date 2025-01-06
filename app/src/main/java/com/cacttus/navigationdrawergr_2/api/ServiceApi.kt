@@ -1,9 +1,11 @@
 package com.cacttus.navigationdrawergr_2.api
 
+import com.cacttus.navigationdrawergr_2.model.Comment
 import com.cacttus.navigationdrawergr_2.model.Post
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ServiceApi {
     @GET("posts")
@@ -12,5 +14,6 @@ interface ServiceApi {
     @GET("posts/{id}")
     fun getPostById(@Path("id") id: Int): Call<Post>
 
-//    fun getCommentsByPostId(): Call<List<Post>>
+    @GET("comments")
+    fun getCommentsByPostId(@Query("postId") postId: Int): Call<List<Comment>>
 }

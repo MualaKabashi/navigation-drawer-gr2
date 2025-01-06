@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import com.cacttus.navigationdrawergr_2.databinding.ActivityMainBinding
+import com.cacttus.navigationdrawergr_2.fragments.CommentsFragment
 import com.cacttus.navigationdrawergr_2.fragments.HomeFragment
 import com.cacttus.navigationdrawergr_2.fragments.PostFragment
 import com.cacttus.navigationdrawergr_2.fragments.ProfileFragment
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var settingsFragment: SettingsFragment
     private lateinit var profileFragment: ProfileFragment
     private lateinit var postFragment: PostFragment
+    private lateinit var commentsFragment: CommentsFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         settingsFragment = SettingsFragment()
         profileFragment = ProfileFragment()
         postFragment = PostFragment()
+        commentsFragment = CommentsFragment()
     }
 
     private fun setCurrentFragment(fragment: Fragment) {
@@ -81,6 +84,11 @@ class MainActivity : AppCompatActivity() {
                 R.id.post -> {
                     closeDrawerIfOpen()
                     setCurrentFragment(postFragment)
+                }
+
+                R.id.comments -> {
+                    closeDrawerIfOpen()
+                    setCurrentFragment(commentsFragment)
                 }
             }
             true

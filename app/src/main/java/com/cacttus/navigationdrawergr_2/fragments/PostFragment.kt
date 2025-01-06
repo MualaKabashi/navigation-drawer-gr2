@@ -49,7 +49,9 @@ class PostFragment : Fragment() {
 
                     binding.postList.setOnItemClickListener { adapterView, view, i, l ->
                         addIntToSharedPreferences(requireContext(), "id", list[i].id)
-                        setCurrentFragment(PostDetailsFragment())
+                        var nextFragment = PostDetailsFragment()
+                        //nextFragment.arguments = setIdToBundle(list[i].id)
+                        setCurrentFragment(nextFragment)
                     }
                 } else {
                     Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
@@ -68,4 +70,12 @@ class PostFragment : Fragment() {
             replace(R.id.fragmentContainer, fragment)
         }.commit()
     }
+
+    fun setIdToBundle(id: Int): Bundle {
+        var bundle = Bundle()
+        bundle.putInt("id", id)
+
+        return bundle
+    }
+
 }
