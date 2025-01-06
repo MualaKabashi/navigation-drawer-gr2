@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.cacttus.navigationdrawergr_2.R
 import com.cacttus.navigationdrawergr_2.adapters.PostAdapter
 import com.cacttus.navigationdrawergr_2.databinding.PostFragmentBinding
+import com.cacttus.navigationdrawergr_2.helpers.Helpers.addIntToSharedPreferences
 import com.cacttus.navigationdrawergr_2.helpers.Helpers.provideRetrofit
 import com.cacttus.navigationdrawergr_2.model.Post
 import retrofit2.Call
@@ -44,6 +46,11 @@ class PostFragment : Fragment() {
                     list = response.body()!!
                     var adapter = PostAdapter(requireContext(), list)
                     binding.postList.adapter = adapter
+
+                    binding.postList.setOnItemClickListener { adapterView, view, i, l ->
+                        addIntToSharedPreferences(requireContext(), "id", list[i].id)
+                        setCurrentFragment(PostDetailsFragment())
+                    }
                 } else {
                     Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
                 }
@@ -53,5 +60,12 @@ class PostFragment : Fragment() {
                 Toast.makeText(requireContext(), t.message, Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+
+    private fun setCurrentFragment(fragment: Fragment) {
+        parentFragmentManager.beginTransaction().apply {
+            replace(R.id.fragmentContainer, fragment)
+        }.commit()
     }
 }
