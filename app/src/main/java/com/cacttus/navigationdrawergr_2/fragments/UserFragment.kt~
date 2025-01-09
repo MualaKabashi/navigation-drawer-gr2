@@ -1,0 +1,6 @@
+package com.cacttus.navigationdrawergr_2.fragments
+
+import androidx.fragment.app.Fragment
+
+class UserFragment : Fragment() {
+}
