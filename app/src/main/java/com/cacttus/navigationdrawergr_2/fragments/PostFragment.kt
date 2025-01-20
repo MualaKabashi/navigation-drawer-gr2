@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.cacttus.navigationdrawergr_2.R
+import androidx.navigation.fragment.findNavController
 import com.cacttus.navigationdrawergr_2.adapters.PostAdapter
 import com.cacttus.navigationdrawergr_2.databinding.PostFragmentBinding
 import com.cacttus.navigationdrawergr_2.helpers.Helpers.addIntToSharedPreferences
@@ -49,9 +49,11 @@ class PostFragment : Fragment() {
 
                     binding.postList.setOnItemClickListener { adapterView, view, i, l ->
                         addIntToSharedPreferences(requireContext(), "id", list[i].id)
-                        var nextFragment = PostDetailsFragment()
+//                        var nextFragment = PostDetailsFragment()
                         //nextFragment.arguments = setIdToBundle(list[i].id)
-                        setCurrentFragment(nextFragment)
+                        var action =
+                            PostFragmentDirections.actionPostFragmentToPostDetailsFragment(list[i].id)
+                        findNavController().navigate(action)
                     }
                 } else {
                     Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
@@ -64,12 +66,6 @@ class PostFragment : Fragment() {
         })
     }
 
-
-    private fun setCurrentFragment(fragment: Fragment) {
-        parentFragmentManager.beginTransaction().apply {
-            replace(R.id.fragmentContainer, fragment)
-        }.commit()
-    }
 
     fun setIdToBundle(id: Int): Bundle {
         var bundle = Bundle()

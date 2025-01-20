@@ -1,111 +1,57 @@
 package com.cacttus.navigationdrawergr_2
 
 import android.os.Bundle
-import android.view.MenuItem
-import androidx.appcompat.app.ActionBarDrawerToggle
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat
-import androidx.fragment.app.Fragment
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.cacttus.navigationdrawergr_2.databinding.ActivityMainBinding
-import com.cacttus.navigationdrawergr_2.fragments.CommentsFragment
-import com.cacttus.navigationdrawergr_2.fragments.HomeFragment
-import com.cacttus.navigationdrawergr_2.fragments.PostFragment
-import com.cacttus.navigationdrawergr_2.fragments.ProfileFragment
-import com.cacttus.navigationdrawergr_2.fragments.SettingsFragment
-import com.cacttus.navigationdrawergr_2.fragments.UserFragment
+import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    private lateinit var toggle: ActionBarDrawerToggle
-    private lateinit var homeFragment: HomeFragment
-    private lateinit var settingsFragment: SettingsFragment
-    private lateinit var profileFragment: ProfileFragment
-    private lateinit var postFragment: PostFragment
-    private lateinit var commentsFragment: CommentsFragment
-    private lateinit var userFragment: UserFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        initToggle()
-        initializeFragments()
-        showMenu()
-        selectWhichFragmentToDisplay()
+
+        setSupportActionBar(binding.appBarMain.toolbar)
+
+        val drawerLayout: DrawerLayout = binding.drawerLayout
+        val navView: NavigationView = binding.navigationView
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.userFragment,
+                R.id.homeFragment,
+                R.id.postFragment,
+                R.id.commentsFragment,
+                R.id.settingsFragment
+            ), drawerLayout
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
     }
 
-
-    private fun initializeFragments() {
-        homeFragment = HomeFragment()
-        settingsFragment = SettingsFragment()
-        profileFragment = ProfileFragment()
-        postFragment = PostFragment()
-        commentsFragment = CommentsFragment()
-        userFragment = UserFragment()
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
     }
 
-    private fun setCurrentFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fragmentContainer, fragment)
-        }.commit()
-    }
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
 
-    private fun initToggle() {
-        toggle = ActionBarDrawerToggle(this, binding.drawerLayout, R.string.open, R.string.close)
-        binding.drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-    }
-
-    private fun closeDrawerIfOpen() {
-        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            binding.drawerLayout.closeDrawers()
-        }
-    }
-
-    private fun showMenu() {
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    }
-
-    private fun selectWhichFragmentToDisplay() {
-        binding.navigationView.setNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.profile -> {
-                    closeDrawerIfOpen()
-                    setCurrentFragment(profileFragment)
-                }
-
-                R.id.settings -> {
-                    closeDrawerIfOpen()
-                    setCurrentFragment(settingsFragment)
-                }
-
-                R.id.home -> {
-                    closeDrawerIfOpen()
-                    setCurrentFragment(homeFragment)
-                }
-
-                R.id.post -> {
-                    closeDrawerIfOpen()
-                    setCurrentFragment(postFragment)
-                }
-
-                R.id.comments -> {
-                    closeDrawerIfOpen()
-                    setCurrentFragment(commentsFragment)
-                }
-
-                R.id.users -> {
-                    closeDrawerIfOpen()
-                    setCurrentFragment(userFragment)
-                }
-            }
-            true
-        }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (toggle.onOptionsItemSelected(item)) return true
-        return super.onOptionsItemSelected(item)
     }
 }
 

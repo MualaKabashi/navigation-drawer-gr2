@@ -15,11 +15,20 @@
     <fragment
         android:id="@+id/postDetailsFragment"
         android:name="com.cacttus.navigationdrawergr_2.fragments.PostDetailsFragment"
-        android:label="PostDetailsFragment" />
+        android:label="PostDetailsFragment" >
+        <argument
+            android:name="id"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
     <fragment
         android:id="@+id/postFragment"
         android:name="com.cacttus.navigationdrawergr_2.fragments.PostFragment"
-        android:label="PostFragment" />
+        android:label="PostFragment" >
+        <action
+            android:id="@+id/action_postFragment_to_postDetailsFragment"
+            app:destination="@id/postDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.cacttus.navigationdrawergr_2.fragments.ProfileFragment"
